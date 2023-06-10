@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import TaskCard from './components/taskcard'
 
 export default function Home() {
   const [tasks, setTasks] = useState([])
@@ -18,8 +19,15 @@ export default function Home() {
   }, [])
   console.log(tasks)
   return (
-    <>
-      <h1>xd</h1>
-    </>
+    <div className='py-10 px-32'>
+      <div className='py-10 px-32 border-solid border-2 rounded-md border-zinc-700'>
+        <div className='text-5xl text-center mb-8 text-slate-100 font-bold underline decoration-sky-500'>
+          Task Manager
+        </div>
+        {tasks.map((task) => (
+          <TaskCard key={task[task]} task={task} />
+        ))}
+      </div>
+    </div>
   )
 }
