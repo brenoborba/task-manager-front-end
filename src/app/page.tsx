@@ -1,20 +1,39 @@
 'use client'
-import Image from 'next/image'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import TaskCard from './components/taskcard'
 import { FaPlusCircle } from 'react-icons/fa'
+import axios from 'axios'
 
 export default function Home() {
   const [tasks, setTasks] = useState([])
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const data = {
+      name: e.target.name.value,
+      description: e.target.description.value,
+      status: 1,
+    }
+
+    const JSONdata = JSON.stringify(data)
+
+    const myHeaders = new Headers()
+    myHeaders.append('Content-Type', 'application/json')
+
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/Task/`, {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSONdata,
+        redirect: 'follow',
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/Task/`, {
-      mode: 'cors',
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
-    })
+    fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/Task/`)
       .then((res) => res.json())
       .then((data) => setTasks(data))
   }, [])
@@ -34,6 +53,27 @@ export default function Home() {
             <FaPlusCircle size={20} />
           </div>
         </button>
+        <div className='border-solid border-2 rounded-md px-6 py-4 border-zinc-700 shadow-lg'>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label className='text-xl'>Name:</label>
+              <input
+                type='text'
+                name='name'
+                className='bg-zinc-700 ml-2 rounded-md'
+              ></input>
+            </div>
+            <div>
+              <label className='text-xl'>Description:</label>
+              <input
+                type='text'
+                name='description'
+                className='bg-zinc-700 ml-2 rounded-md'
+              ></input>
+            </div>
+            <button type='submit'>submit</button>
+          </form>
+        </div>
         {tasks.map((task) => (
           <TaskCard key={task.id} task={task} />
         ))}
