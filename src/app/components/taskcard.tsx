@@ -1,10 +1,11 @@
 import React from 'react'
 import { FaTrashAlt, FaEdit } from 'react-icons/fa'
+import { deleteTask } from '../api/api-utils'
 
 export default function TaskCard({ task }) {
   return (
     <>
-      <div className='max-w px-6 py-4 flex justify-between border-solid border-2 rounded-md border-zinc-700 shadow-lg'>
+      <div className='max-w px-6 py-4 mb-4 flex justify-between border-solid border-2 rounded-md border-zinc-700 shadow-lg'>
         <div className='flex'>
           {/* <input
             type='checkbox'
@@ -16,6 +17,7 @@ export default function TaskCard({ task }) {
               Description: {task.description}
             </div>
             <div className='text-md text-slate-100'>Status: {task.status} </div>
+            <div className='text-sm text-slate-100'>Id: {task.id} </div>
           </div>
         </div>
 
@@ -26,7 +28,10 @@ export default function TaskCard({ task }) {
             </div>
           </button>
 
-          <button className='w-16 h-16 bg-zinc-700 rounded-md transition-colors duration-300 ease-in-out hover:bg-zinc-500'>
+          <button
+            onClick={() => deleteTask(task.id)}
+            className='w-16 h-16 bg-zinc-700 rounded-md transition-colors duration-300 ease-in-out hover:bg-zinc-500'
+          >
             <div className='max-w flex justify-center align-middle'>
               <FaTrashAlt size={24} />
             </div>

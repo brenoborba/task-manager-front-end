@@ -2,10 +2,16 @@
 import { useEffect, useState } from 'react'
 import TaskCard from './components/taskcard'
 import { FaPlusCircle } from 'react-icons/fa'
+import { fetchTasks, createTask } from './api/api-utils'
 import axios from 'axios'
 
 export default function Home() {
   const [tasks, setTasks] = useState([])
+  const [isVisible, setIsVisible] = useState(false)
+
+  const handleClick = () => {
+    setIsVisible(!isVisible)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -16,26 +22,20 @@ export default function Home() {
     }
 
     const JSONdata = JSON.stringify(data)
-
-    const myHeaders = new Headers()
-    myHeaders.append('Content-Type', 'application/json')
-
-    try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/Task/`, {
-        method: 'POST',
-        headers: myHeaders,
-        body: JSONdata,
-        redirect: 'follow',
-      })
-    } catch (error) {
-      console.log(error)
-    }
+    createTask(JSONdata)
   }
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_HOST}/api/Task/`)
-      .then((res) => res.json())
-      .then((data) => setTasks(data))
+    const fetchTasksData = async () => {
+      try {
+        const tasksData = await fetchTasks()
+        setTasks(tasksData)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    fetchTasksData()
   }, [])
 
   return (
@@ -46,33 +46,36 @@ export default function Home() {
         </div>
         <button
           type='submit'
-          className='flex w-44 mb-4 justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm transition ease-in-out delay-150 bg-zinc-700 hover:-translate-y-1 hover:scale-110 hover:bg-zinc-500 duration-300'
+          onClick={handleClick}
+          className='flex w-44 mb-4 justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm transition ease-in-out delay-150 bg-zinc-700 hover:-translate-y-1 hover:scale-110 hover:bg-zinc-500 duration-200'
         >
           <div className='flex items-center'>
             <p className='text-xl mr-2'>New Task</p>
             <FaPlusCircle size={20} />
           </div>
         </button>
-        <div className='border-solid border-2 rounded-md px-6 py-4 border-zinc-700 shadow-lg'>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label className='text-xl'>Name:</label>
-              <input
-                type='text'
-                name='name'
-                className='bg-zinc-700 ml-2 rounded-md'
-              ></input>
-            </div>
-            <div>
-              <label className='text-xl'>Description:</label>
-              <input
-                type='text'
-                name='description'
-                className='bg-zinc-700 ml-2 rounded-md'
-              ></input>
-            </div>
-            <button type='submit'>submit</button>
-          </form>
+        <div className={isVisible ? 'block' : 'hidden'}>
+          <div className='border-solid border-2 mb-4 rounded-md px-6 py-4 border-zinc-700 shadow-lg'>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <label className='text-xl'>Name:</label>
+                <input
+                  type='text'
+                  name='name'
+                  className='bg-zinc-700 ml-2 rounded-sm'
+                ></input>
+              </div>
+              <div>
+                <label className='text-xl'>Description:</label>
+                <input
+                  type='text'
+                  name='description'
+                  className='bg-zinc-700 ml-2 rounded-sm'
+                ></input>
+              </div>
+              <button type='submit'>Create</button>
+            </form>
+          </div>
         </div>
         {tasks.map((task) => (
           <TaskCard key={task.id} task={task} />
