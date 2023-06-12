@@ -7,6 +7,7 @@ import axios from 'axios'
 
 export default function Home() {
   const [tasks, setTasks] = useState([])
+  const [taskCount, setTaskCount] = useState<number>()
   const [isVisible, setIsVisible] = useState(false)
 
   const handleClick = () => {
