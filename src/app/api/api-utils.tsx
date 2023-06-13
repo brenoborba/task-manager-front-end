@@ -1,9 +1,5 @@
 import axios from 'axios'
 
-const headers = {
-  'Content-Type': 'application/json',
-}
-
 const config = {
   headers: {
     'Content-Type': 'application/json',
@@ -27,6 +23,18 @@ export const createTask = async (requestData: any) => {
   try {
     await axios.post(
       `${process.env.NEXT_PUBLIC_API_HOST}/api/Task/`,
+      requestData,
+      config
+    )
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const updateTask = async (requestData: any, taskId: any) => {
+  try {
+    await axios.put(
+      `${process.env.NEXT_PUBLIC_API_HOST}/api/Task/${taskId}`,
       requestData,
       config
     )

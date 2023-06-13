@@ -1,13 +1,12 @@
 'use client'
+import axios from 'axios'
 import { useEffect, useState } from 'react'
 import TaskCard from './components/taskcard'
 import { FaPlusCircle } from 'react-icons/fa'
 import { fetchTasks, createTask } from './api/api-utils'
-import axios from 'axios'
 
 export default function Home() {
   const [tasks, setTasks] = useState([])
-  const [taskCount, setTaskCount] = useState<number>()
   const [isVisible, setIsVisible] = useState(false)
 
   const handleClick = () => {
@@ -74,7 +73,20 @@ export default function Home() {
                   className='bg-zinc-700 ml-2 rounded-sm'
                 ></input>
               </div>
-              <button type='submit'>Create</button>
+              <div className='flex mt-4'>
+                <button
+                  onClick={() => setIsVisible(false)}
+                  className='flex w-20 mr-2 bg-zinc-700 justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm transition-colors duration-300 ease-in-out hover:bg-zinc-500'
+                >
+                  Cancel
+                </button>
+                <button
+                  type='submit'
+                  className='flex w-20 bg-zinc-700 justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm transition-colors duration-300 ease-in-out hover:bg-zinc-500'
+                >
+                  Create
+                </button>
+              </div>
             </form>
           </div>
         </div>
