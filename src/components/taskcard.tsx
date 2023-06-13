@@ -3,17 +3,7 @@ import { FaTrashAlt, FaEdit, FaCheckCircle } from 'react-icons/fa'
 import { deleteTask, updateTask } from '../api/api-utils'
 
 export default function TaskCard({ task }) {
-  const [editedTask, setEditedTask] = useState({
-    name: '',
-    description: '',
-    state: 0,
-  })
   const [isEditing, setIsEditing] = useState(false)
-
-  const handleEditClick = () => {
-    setIsEditing(true)
-    setEditedTask(task.text)
-  }
 
   const handleSaveEdit = (e) => {
     e.preventDefault()
@@ -25,6 +15,7 @@ export default function TaskCard({ task }) {
 
     const JSONdata = JSON.stringify(data)
     updateTask(JSONdata, task.id)
+    setIsEditing(false)
   }
 
   return (
@@ -96,7 +87,7 @@ export default function TaskCard({ task }) {
 
             <div className='my-auto'>
               <button
-                onClick={handleEditClick}
+                onClick={() => setIsEditing(true)}
                 className='w-16 h-16 bg-zinc-700 mr-2 rounded-md transition-colors duration-300 ease-in-out hover:bg-zinc-500'
               >
                 <div className='max-w flex justify-center align-middle'>

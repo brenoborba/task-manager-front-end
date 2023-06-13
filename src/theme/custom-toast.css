@@ -1,0 +1,16 @@
+.custom-toast {
+  background-color: rgb(32 33 35);
+  border-width: 2px;
+  border-color: rgb(63 63 70);
+}
+
+/* Estilo para o corpo do toast */
+.custom-toast-body {
+  background-color: rgb(32 33 35);
+  color: rgb(241 245 249);
+}
+
+/* Estilo para o close button do toast */
+.custom-toast-close-btn {
+  color: rgb(241 245 249);
+}

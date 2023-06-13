@@ -1,9 +1,12 @@
 'use client'
-import axios from 'axios'
+import TaskCard from '@/components/taskcard'
+import { ToastContainer } from 'react-toastify'
 import { useEffect, useState } from 'react'
-import TaskCard from './components/taskcard'
+import { fetchTasks, createTask } from '@/api/api-utils'
 import { FaPlusCircle } from 'react-icons/fa'
-import { fetchTasks, createTask } from './api/api-utils'
+import { task } from './my-types'
+import 'react-toastify/dist/ReactToastify.css'
+import '../theme/custom-toast.css'
 
 export default function Home() {
   const [tasks, setTasks] = useState([])
@@ -15,7 +18,7 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const data = {
+    const data: task = {
       name: e.target.name.value,
       description: e.target.description.value,
       status: 1,
@@ -40,6 +43,7 @@ export default function Home() {
 
   return (
     <div className='py-10 px-32'>
+      <ToastContainer />
       <div className='py-10 px-32'>
         <div className='text-5xl text-center mb-8 text-slate-100 font-bold underline decoration-sky-500'>
           Task Manager
@@ -90,7 +94,7 @@ export default function Home() {
             </form>
           </div>
         </div>
-        {tasks.map((task) => (
+        {tasks.map((task: task) => (
           <TaskCard key={task.id} task={task} />
         ))}
       </div>
